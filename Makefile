@@ -1,5 +1,5 @@
-# This file is part of fishfuncs.
-# https://github.com/heynemann/fishfuncs
+# This file is part of fish-hooks.
+# https://github.com/heynemann/fish-hooks
 
 # Licensed under the MIT license:
 # http://www.opensource.org/licenses/MIT-license
@@ -12,10 +12,12 @@ list:
 # required for list
 no_targets__:
 
-
 # install all dependencies (do not forget to create a virtualenv first)
 setup:
 	@pip install -U -e .\[tests\]
+
+run:
+	@fish-hooks-api
 
 # test your application (tests in the tests/ directory)
 test: unit
@@ -29,20 +31,20 @@ coverage-html: unit
 	@coverage html -d cover
 
 drop:
-	@-cd fishfuncs/ && alembic downgrade base
+	@-cd fishhooks/ && alembic downgrade base
 	@$(MAKE) drop_now
 
 drop_now:
-	@mysql -u root -e "DROP DATABASE IF EXISTS fishfuncs; CREATE DATABASE IF NOT EXISTS fishfuncs"
+	@mysql -u root -e "DROP DATABASE IF EXISTS fishhooks; CREATE DATABASE IF NOT EXISTS fishhooks"
 	@echo "DB RECREATED"
 
 drop_test:
 	@-cd tests/ && alembic downgrade base
-	@mysql -u root -e "DROP DATABASE IF EXISTS test_fishfuncs; CREATE DATABASE IF NOT EXISTS test_fishfuncs"
+	@mysql -u root -e "DROP DATABASE IF EXISTS test_fishhooks; CREATE DATABASE IF NOT EXISTS test_fishhooks"
 	@echo "DB RECREATED"
 
 data db:
-	@cd fishfuncs/ && alembic upgrade head
+	@cd fishhooks/ && alembic upgrade head
 
 data_test:
 	@cd tests/ && alembic upgrade head
@@ -52,4 +54,4 @@ tox:
 	@tox
 
 #docs:
-	#@cd fishfuncs/docs && make html && open _build/html/index.html
+	#@cd fishhooks/docs && make html && open _build/html/index.html

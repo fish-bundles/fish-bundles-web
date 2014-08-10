@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# This file is part of fishfuncs.
-# https://github.com/heynemann/fishfuncs
+# This file is part of fish-hooks.
+# https://github.com/heynemann/fish-hooks
 
 # Licensed under the MIT license:
 # http://www.opensource.org/licenses/MIT-license
@@ -10,7 +10,7 @@
 
 
 from setuptools import setup, find_packages
-from fishfuncs import __version__
+from fishhooks import __version__
 
 tests_require = [
     'mock',
@@ -25,16 +25,16 @@ tests_require = [
 ]
 
 setup(
-    name='fishfuncs',
+    name='fish-hooks',
     version=__version__,
-    description='fishfuncs is a repository for fish shell functions',
+    description='fish-hooks is a repository for fish shell functions',
     long_description='''
-fishfuncs is a repository for fish shell functions
+fish-hooks is a repository for fish shell functions
 ''',
     keywords='fish shell repository share',
     author='Bernardo Heynemann',
     author_email='heynemann@gmail.com',
-    url='https://github.com/heynemann/fishfuncs',
+    url='https://github.com/heynemann/fish-hooks',
     license='MIT',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -53,6 +53,7 @@ fishfuncs is a repository for fish shell functions
         'flask',
         'alembic',
         'mysql-python',
+        'GitHub-Flask',
     ],
     extras_require={
         'tests': tests_require,
@@ -60,7 +61,7 @@ fishfuncs is a repository for fish shell functions
     entry_points={
         'console_scripts': [
             # add cli scripts here in this form:
-            'fishfuncs-api=fishfuncs.app:main',
+            'fish-hooks-api=fishhooks.app:main',
         ],
     },
 )
