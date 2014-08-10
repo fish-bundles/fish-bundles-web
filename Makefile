@@ -28,6 +28,24 @@ unit:
 coverage-html: unit
 	@coverage html -d cover
 
+drop:
+	@-cd fishfuncs/ && alembic downgrade base
+	@$(MAKE) drop_now
+
+drop_now:
+	@mysql -u root -e "DROP DATABASE IF EXISTS fishfuncs; CREATE DATABASE IF NOT EXISTS fishfuncs"
+	@echo "DB RECREATED"
+
+drop_test:
+	@-cd tests/ && alembic downgrade base
+	@mysql -u root -e "DROP DATABASE IF EXISTS test_fishfuncs; CREATE DATABASE IF NOT EXISTS test_fishfuncs"
+	@echo "DB RECREATED"
+
+data db:
+	@cd fishfuncs/ && alembic upgrade head
+
+data_test:
+	@cd tests/ && alembic upgrade head
 
 # run tests against all supported python versions
 tox:

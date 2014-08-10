@@ -50,6 +50,9 @@ fishfuncs is a repository for fish shell functions
     install_requires=[
         # add your dependencies here
         # remember to use 'package-name>=x.y.z,<x.y+1.0' notation (this way you get bugfixes)
+        'flask',
+        'alembic',
+        'mysql-python',
     ],
     extras_require={
         'tests': tests_require,
@@ -57,7 +60,7 @@ fishfuncs is a repository for fish shell functions
     entry_points={
         'console_scripts': [
             # add cli scripts here in this form:
-            # 'fishfuncs=fishfuncs.cli:main',
+            'fishfuncs-api=fishfuncs.app:main',
         ],
     },
 )
