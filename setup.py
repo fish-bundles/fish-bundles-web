@@ -54,6 +54,7 @@ fish-hooks is a repository for fish shell functions
         'alembic',
         'mysql-python',
         'GitHub-Flask',
+        'Flask-SQLAlchemy',
     ],
     extras_require={
         'tests': tests_require,

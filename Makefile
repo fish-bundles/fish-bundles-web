@@ -30,6 +30,9 @@ unit:
 coverage-html: unit
 	@coverage html -d cover
 
+migration:
+	@cd fishhooks/ && alembic revision -m "$(DESC)"
+
 drop:
 	@-cd fishhooks/ && alembic downgrade base
 	@$(MAKE) drop_now
