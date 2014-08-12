@@ -12,6 +12,7 @@
         &:before {
             content: '';
             display: block;
+            /*https://www.iconfinder.com/icons/127817/anatomy_animal_atomy_barebone_body_bone_bones_cadever_carcase_carcass_corpse_corse_dead_death_ecology_fish_frame_skeleton_skull_stiff_icon#size=96*/
             @include common-sprite(logo, $dimensions: true);
         }
     }
