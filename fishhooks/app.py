@@ -30,7 +30,6 @@ def authenticated(f):
     return decorated
 
 
-@authenticated
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -133,7 +132,7 @@ def main():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/fishhooks'
     app.config['GITHUB_CLIENT_ID'] = '0cd596cdcfb372e75fb0'
     app.config['GITHUB_CLIENT_SECRET'] = '14569ca47300ab7d30ebe784a10efe0f9ce93981'
-    app.config['GITHUB_CALLBACK_URL'] = 'http://local.fish-hooks.com:5000/github-callback'
+    app.config['GITHUB_CALLBACK_URL'] = 'http://local.bundles.fish:5000/github-callback'
     app.secret_key = '5CA2086C182A0CFA601896960DF196F09DEA13A14D884F810B52217F6323D8E1'
     github.init_app(app)
     db.init_app(app)
