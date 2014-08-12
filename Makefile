@@ -14,6 +14,12 @@ no_targets__:
 
 # install all dependencies (do not forget to create a virtualenv first)
 setup:
+	@echo "------------------------------------------------------------------------"
+	@echo "Make sure to have coffee-script installed (npm install -g coffee-script)"
+	@echo "------------------------------------------------------------------------"
+	@echo
+	@bundle
+	@bower install
 	@pip install -U -e .\[tests\]
 
 run:

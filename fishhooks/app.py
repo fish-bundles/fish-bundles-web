@@ -3,9 +3,13 @@ from functools import wraps
 from flask import Flask, request, url_for, flash, redirect, g, session, render_template
 from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
+from flaskext.compass import Compass
+from flaskext.coffee import coffee
+from flask.ext.assets import Environment, Bundle
 
 app = Flask(__name__)
 github = GitHub()
+assets = Environment()
 
 db = SQLAlchemy()
 
@@ -135,8 +139,26 @@ def main():
     app.secret_key = '5CA2086C182A0CFA601896960DF196F09DEA13A14D884F810B52217F6323D8E1'
     github.init_app(app)
     db.init_app(app)
+    Compass(app)
+    coffee(app)
+    init_bundles()
 
     app.run(debug=True)
+
+
+def init_bundles():
+    assets.init_app(app)
+    base_libs = [
+        'vendor/jquery/dist/jquery.js'
+    ]
+    js = Bundle(*base_libs, filters='jsmin', output='fish-bundles.base.min.js')
+    assets.register('js_base', js)
+
+    app_files = [
+        'scripts/main.js'
+    ]
+    js = Bundle(*app_files, filters='jsmin', output='fish-bundles.app.min.js')
+    assets.register('js_app', js)
 
 
 if __name__ == "__main__":

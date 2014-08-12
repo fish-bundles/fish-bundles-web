@@ -55,6 +55,11 @@ fish-hooks is a repository for fish shell functions
         'mysql-python',
         'GitHub-Flask',
         'Flask-SQLAlchemy',
+        'flask-coffee',
+        'Flask-Compass',
+        'Flask-Assets',
+        'jsmin',
+        'cssmin',
     ],
     extras_require={
         'tests': tests_require,

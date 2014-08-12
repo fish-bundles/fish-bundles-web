@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>fish-bundles - your source for fish-shell functions</title>
+    </head>
+    <body>
+        {% assets "js_base" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% assets "js_app" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% block script %}{% endblock %}
+    </body>
+</html>
