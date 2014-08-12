@@ -6,5 +6,23 @@
 @import "bootstrap-variables";
 @import "bootstrap";
 
+.btn {
+    color: #3b5895;
+    &:hover {
+        color: #4d70b2;
+    }
+}
+
+.btn-primary {
+    color: white;
+    border-color: #4d70b2;
+    background-color: #3b5895;
+
+    &:hover {
+        color: white;
+        background-color: #2f4675;
+    }
+}
+
 @import "header";
 @import "index";

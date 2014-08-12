@@ -159,11 +159,11 @@ def init_bundles():
 
     app.config['COMPASS_PLUGINS'] = ['bootstrap-sass']
     app.config['COMPASS_CONFIG'] = dict(
-        http_path="/",
         css_dir="stylesheets",
         sass_dir="sass",
         images_dir="images",
         javascripts_dir="scripts",
+        relative_assets=True,
     )
     css_files = [
         'sass/main.scss'
