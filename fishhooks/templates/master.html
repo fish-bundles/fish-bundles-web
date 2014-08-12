@@ -1,8 +1,13 @@
 <html>
     <head>
         <title>fish-bundles - your source for fish-shell functions</title>
+
+        {% assets "css_app" %}
+            <link href="{{ ASSET_URL }}" rel="stylesheet">
+        {% endassets %}
     </head>
     <body>
+        {% block main %}{% endblock %}
         {% assets "js_base" %}
             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
