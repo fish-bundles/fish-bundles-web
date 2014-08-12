@@ -3,13 +3,11 @@ from functools import wraps
 from flask import Flask, request, url_for, flash, redirect, g, session, render_template
 from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
-from flaskext.compass import Compass
-from flaskext.coffee import coffee
 from flask.ext.assets import Environment, Bundle
 
 app = Flask(__name__)
 github = GitHub()
-assets = Environment()
+assets = Environment(app)
 
 db = SQLAlchemy()
 
@@ -140,34 +138,44 @@ def main():
     github.init_app(app)
     db.init_app(app)
 
-    app.config['COMPASS_CONFIGS'] = ['./fishhooks/static/config.rb']
-    Compass(app)
-    coffee(app)
     init_bundles()
 
     app.run(debug=True)
 
 
 def init_bundles():
-    assets.init_app(app)
     base_libs = [
         'vendor/jquery/dist/jquery.js',
         'vendor/bootstrap-sass-official/assets/javascripts/bootstrap.js',
     ]
-    js = Bundle(*base_libs, filters='jsmin', output='fish-bundles.base.min.js')
+    js = Bundle(*base_libs, filters=['jsmin'], output='fish-bundles.base.min.js')
     assets.register('js_base', js)
 
     app_files = [
-        'scripts/main.js'
+        'scripts/main.coffee'
     ]
-    js = Bundle(*app_files, filters='jsmin', output='fish-bundles.app.min.js')
+    js = Bundle(*app_files, filters=['coffeescript', 'jsmin'], output='fish-bundles.app.min.js')
     assets.register('js_app', js)
 
+    app.config['COMPASS_PLUGINS'] = ['bootstrap-sass']
+    app.config['COMPASS_CONFIG'] = dict(
+        http_path="/",
+        css_dir="stylesheets",
+        sass_dir="sass",
+        images_dir="images",
+        javascripts_dir="scripts",
+    )
     css_files = [
-        'stylesheets/main.css'
+        'sass/main.scss'
     ]
-    js = Bundle(*css_files, filters='cssmin', output='fish-bundles.min.css')
-    assets.register('css_app', js)
+
+    css = Bundle(*css_files, depends=["**/*.scss"], filters=['compass', 'cssmin'], output='fish-bundles.min.css')
+    assets.register('css_app', css)
+
+    assets.auto_build = True
+    assets.debug = True
+    assets.manifest = "file"
+    assets.cache = False
 
 
 if __name__ == "__main__":

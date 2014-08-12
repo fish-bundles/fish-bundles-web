@@ -1,3 +1,0 @@
-V\u000a(function(){var MainCtrl,ctrl;MainCtrl=(function(){function MainCtrl(test){this.test=test;}\u000areturn MainCtrl;})();ctrl=new MainCtrl("b");}).call(this);
-p1
-.
