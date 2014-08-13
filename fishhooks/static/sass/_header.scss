@@ -8,7 +8,14 @@
 
     .icon {
         margin: 40px auto 20px;
+        display: block;
         @include common-sprite-dimensions(logo);
+        opacity: .999;
+        @include transition(opacity 100ms linear);
+
+        &:hover{
+            opacity: .9;
+        }
 
         &:before {
             content: '';
@@ -37,7 +44,7 @@
     display: block;
     @include common-sprite(fork);
     text-indent: -9000px;
-    z-index: 5000;
+    z-index: 3;
 }
 
 footer {

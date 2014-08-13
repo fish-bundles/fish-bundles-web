@@ -35,6 +35,12 @@ def index():
     return render_template('index.html')
 
 
+@app.route("/create-bundle")
+@authenticated
+def create_bundle():
+    return render_template('create.html')
+
+
 @app.route('/authenticate')
 def authenticate():
     return github.authorize()
@@ -146,12 +152,17 @@ def init_bundles():
     base_libs = [
         'vendor/jquery/dist/jquery.js',
         'vendor/bootstrap-sass-official/assets/javascripts/bootstrap.js',
+        'vendor/codemirror/lib/codemirror.js',
+        'vendor/codemirror/addon/display/fullscreen.js',
+        'scripts/markdown.js',
+        'scripts/shell.js',
     ]
     js = Bundle(*base_libs, filters=['jsmin'], output='fish-bundles.base.min.js')
     assets.register('js_base', js)
 
     app_files = [
-        'scripts/main.coffee'
+        'scripts/main.coffee',
+        'scripts/create.coffee',
     ]
     js = Bundle(*app_files, filters=['coffeescript', 'jsmin'], output='fish-bundles.app.min.js')
     assets.register('js_app', js)
@@ -164,6 +175,16 @@ def init_bundles():
         javascripts_dir="scripts",
         relative_assets=True,
     )
+
+    css_files = [
+        'vendor/codemirror/lib/codemirror.css',
+        'vendor/codemirror/addon/display/fullscreen.css',
+        'vendor/codemirror/theme/monokai.css',
+    ]
+
+    css = Bundle(*css_files, filters=['cssmin'], output='fish-bundles.base.min.css')
+    assets.register('css_base', css)
+
     css_files = [
         'sass/main.scss'
     ]

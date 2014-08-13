@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+
+{% block main %}
+<div class="container create-bundle">
+    <h1>New Bundle</h1>
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <input type="text" class="form-control input-lg" id="bundle-name" name="bundle-name" placeholder="Enter bundle name">
+        </div>
+    </form>
+
+    <div class="col-md-8">
+        <p class="pull-right editor-note"><span class="badge">note</span> <small>press F11 while editing for full-screen mode</small></p>
+        <h2>readme.md</h2>
+        <div class="markdown-editor readme-md">
+        </div>
+
+        <p class="pull-right editor-note"><span class="badge">note</span> <small>press F11 while editing for full-screen mode</small></p>
+        <h2>main .fish file</h2>
+        <div class="plugin-main-fish">
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Bundle Files</h2>
+        <dl class="dl-horizontal">
+            <dt>README.md</dt>
+            <dd>Usage, configuration options, dependencies and anything else relevant to the bundle.</dd>
+            <dt><span class="bundle-name-placeholder">[plugin-name]</span>.fish</dt>
+            <dd>Main function with the same name as the bundle (optional).</dd>
+            <dt>any other .fish files</dt>
+            <dd>Additional functions to the main one in the bundle.</dd>
+        </dl>
+    </div>
+
+</div>
+{% endblock %}

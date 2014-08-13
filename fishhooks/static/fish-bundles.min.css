@@ -8077,10 +8077,19 @@ button.close {
 /* line 9, ../static/sass/_header.scss */
 .logo .icon {
   margin: 40px auto 20px;
+  display: block;
   height: 112px;
   width: 529px;
+  opacity: .999;
+  -webkit-transition: opacity 100ms linear;
+  -o-transition: opacity 100ms linear;
+  transition: opacity 100ms linear;
 }
-/* line 13, ../static/sass/_header.scss */
+/* line 16, ../static/sass/_header.scss */
+.logo .icon:hover {
+  opacity: .9;
+}
+/* line 20, ../static/sass/_header.scss */
 .logo .icon:before {
   content: '';
   display: block;
@@ -8089,18 +8098,18 @@ button.close {
   height: 112px;
   width: 529px;
 }
-/* line 20, ../static/sass/_header.scss */
+/* line 27, ../static/sass/_header.scss */
 .logo .text {
   font-size: 21px;
   font-weight: 200;
 }
-/* line 25, ../static/sass/_header.scss */
+/* line 32, ../static/sass/_header.scss */
 .logo .buttons {
   margin-top: 20px;
   margin-bottom: 30px;
 }
 
-/* line 31, ../static/sass/_header.scss */
+/* line 38, ../static/sass/_header.scss */
 #forkme_banner {
   position: absolute;
   top: 0;
@@ -8110,10 +8119,10 @@ button.close {
   display: block;
   background-position: 0 -112px;
   text-indent: -9000px;
-  z-index: 5000;
+  z-index: 3;
 }
 
-/* line 43, ../static/sass/_header.scss */
+/* line 50, ../static/sass/_header.scss */
 footer {
   margin-top: 30px;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eeeeee), color-stop(100%, #cccccc));
@@ -8126,7 +8135,7 @@ footer {
   line-height: 60px;
   text-align: center;
 }
-/* line 49, ../static/sass/_header.scss */
+/* line 56, ../static/sass/_header.scss */
 footer p {
   margin: 0;
 }
@@ -8178,4 +8187,23 @@ footer p {
 .category .toolbar {
   margin-top: -10px;
   overflow: hidden;
+}
+
+/* line 1, ../static/sass/_create.scss */
+.create-bundle {
+  margin-top: 21px;
+}
+/* line 4, ../static/sass/_create.scss */
+.create-bundle .editor-note {
+  margin-top: 30px;
+}
+/* line 8, ../static/sass/_create.scss */
+.create-bundle #bundle-name {
+  height: 58px;
+  font-size: 24px;
+  line-height: 32px;
+}
+/* line 14, ../static/sass/_create.scss */
+.create-bundle .CodeMirror {
+  border-radius: 3px;
 }

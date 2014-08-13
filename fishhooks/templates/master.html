@@ -2,6 +2,10 @@
     <head>
         <title>fish-bundles - your source for fish-shell functions</title>
 
+        {% assets "css_base" %}
+            <link href="{{ ASSET_URL }}" rel="stylesheet">
+        {% endassets %}
+
         {% assets "css_app" %}
             <link href="{{ ASSET_URL }}" rel="stylesheet">
         {% endassets %}
@@ -11,11 +15,11 @@
         <header>
             <div class="logo">
                 <div class="container">
-                    <div class="icon"></div>
+                    <a class="icon" href="/"></a>
                     <p class="text">fish-hooks allows fish-shell users to easily share their functions with each other.</p>
                     <p class="buttons">
                         <a class="btn btn-primary btn-lg" role="button">Install</a>
-                        <a class="btn btn-lg" role="button">Create a bundle</a>
+                        <a class="btn btn-lg" href="/create-bundle" role="button">Create a bundle</a>
                         <a class="pull-right btn btn-lg" role="button">Read the docs</a>
                     </p>
                 </div>
