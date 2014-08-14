@@ -53,3 +53,4 @@ coverage.xml
 docs/_build/
 .webassets-cache
 .sass-cache
+fishhooks/static/vendor/
