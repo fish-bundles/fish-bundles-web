@@ -2,14 +2,35 @@
 
 {% block main %}
 <div class="container create-bundle">
-    <h1>New Bundle</h1>
+    <h2>New Bundle</h2>
     <form class="form-horizontal" role="form">
         <div class="form-group">
-            <input type="text" class="form-control input-lg" id="bundle-name" name="bundle-name" placeholder="Enter bundle name">
+            <div class="alert alert-danger alert-dismissible" id="duplicate-name" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                Unfortunately this <strong>name</strong> is taken. Please try again!
+            </div>
+            <label for="bundle-name" class="col-sm-1 input-lg control-label">Name</label>
+            <div class="col-sm-3">
+                <input maxlength="50" type="text" class="form-control" id="bundle-name" name="bundle-name" placeholder="Enter bundle name">
+            </div>
+
+            <label for="bundle-category" class="col-sm-1 input-lg control-label">Category</label>
+            <div class="col-sm-3">
+                <select name='bundle-category' id='bundle-category' class="form-control">
+                    <option value="1">Language Integration</option>
+                    <option value="2">Source Control</option>
+                    <option value="3">Sys Admin</option>
+                    <option value="4">Others</option>
+                </select>
+            </div>
+
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-success btn-lg btn-block create-bundle-button">Create Bundle</button>
+            </div>
         </div>
     </form>
 
-    <div class="col-md-8">
+    <div class="col-md-12">
         <p class="pull-right editor-note"><span class="badge">note</span> <small>press F11 while editing for full-screen mode</small></p>
         <h2>readme.md</h2>
         <div class="markdown-editor readme-md">
@@ -21,17 +42,17 @@
         </div>
     </div>
 
-    <div class="col-md-4">
-        <h2>Bundle Files</h2>
-        <dl class="dl-horizontal">
-            <dt>README.md</dt>
-            <dd>Usage, configuration options, dependencies and anything else relevant to the bundle.</dd>
-            <dt><span class="bundle-name-placeholder">[plugin-name]</span>.fish</dt>
-            <dd>Main function with the same name as the bundle (optional).</dd>
-            <dt>any other .fish files</dt>
-            <dd>Additional functions to the main one in the bundle.</dd>
-        </dl>
-    </div>
+    <!--<div class="col-md-4">-->
+        <!--<h2>Bundle Files</h2>-->
+        <!--<dl class="dl-horizontal">-->
+            <!--<dt>README.md</dt>-->
+            <!--<dd>Usage, configuration options, dependencies and anything else relevant to the bundle.</dd>-->
+            <!--<dt><span class="bundle-name-placeholder">[plugin-name]</span>.fish</dt>-->
+            <!--<dd>Main function with the same name as the bundle (optional).</dd>-->
+            <!--<dt>any other .fish files</dt>-->
+            <!--<dd>Additional functions to the main one in the bundle.</dd>-->
+        <!--</dl>-->
+    <!--</div>-->
 
 </div>
 {% endblock %}

@@ -29,6 +29,7 @@ end
 class CreateCtrl
     constructor: (@element) ->
         @initializeCodeMirror()
+        @bindEvents()
 
     initializeCodeMirror: ->
         extras =
@@ -53,5 +54,39 @@ class CreateCtrl
             styleActiveLine: true,
             value: value
         )
+
+    bindEvents: ->
+        @elements =
+            name: @element.find('#bundle-name')
+            category: @element.find('#bundle-category')
+            warning: @element.find('#duplicate-name')
+
+        @element.find('.create-bundle-button').bind('click', (ev) =>
+            obj =
+                readme: @readmeMirror.getValue()
+                main: @mainMirror.getValue()
+                name: @elements.name.val()
+                category: @elements.category.val()
+
+            @createNewBundle(obj)
+        )
+
+    createNewBundle: (obj) ->
+        @elements.warning.hide()
+
+        $.ajax({
+            type: "POST",
+            url: '/save-bundle',
+            data:
+                obj: JSON.stringify(obj),
+            success: (result) =>
+                resultObj = JSON.parse(result)
+                if resultObj.result == 'duplicate_name'
+                    @elements.warning.fadeIn()
+                    return
+
+                window.location = "/bundles/#{ resultObj.slug }"
+        });
+
 
 ctrl = new CreateCtrl($('.create-bundle'))

@@ -8147,43 +8147,47 @@ footer p {
   transition: background-color 200ms linear;
 }
 
-/* line 10, ../static/sass/_index.scss */
+/* line 9, ../static/sass/_index.scss */
+.category {
+  margin-top: 30px;
+}
+/* line 12, ../static/sass/_index.scss */
 .category h2 {
   margin-top: 40px;
   margin-bottom: 20px;
 }
-/* line 15, ../static/sass/_index.scss */
+/* line 17, ../static/sass/_index.scss */
 .category .category-description {
   margin-bottom: 30px;
 }
-/* line 18, ../static/sass/_index.scss */
+/* line 20, ../static/sass/_index.scss */
 .category .category-description a {
   margin-top: -2px;
   margin-right: 4px;
 }
-/* line 24, ../static/sass/_index.scss */
+/* line 26, ../static/sass/_index.scss */
 .category a.list-group-item {
   -webkit-transition: background-color 200ms linear;
   -o-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
 }
-/* line 28, ../static/sass/_index.scss */
+/* line 30, ../static/sass/_index.scss */
 .category .label-container {
   font-size: 0;
 }
-/* line 31, ../static/sass/_index.scss */
+/* line 33, ../static/sass/_index.scss */
 .category .label {
   display: inline-block;
   vertical-align: top;
   font-size: 11px;
   margin-right: 5px;
 }
-/* line 39, ../static/sass/_index.scss */
+/* line 41, ../static/sass/_index.scss */
 .category h4 .icon {
   margin-right: 5px;
   top: 3px;
 }
-/* line 45, ../static/sass/_index.scss */
+/* line 47, ../static/sass/_index.scss */
 .category .toolbar {
   margin-top: -10px;
   overflow: hidden;
@@ -8198,12 +8202,18 @@ footer p {
   margin-top: 30px;
 }
 /* line 8, ../static/sass/_create.scss */
-.create-bundle #bundle-name {
-  height: 58px;
-  font-size: 24px;
-  line-height: 32px;
-}
-/* line 14, ../static/sass/_create.scss */
 .create-bundle .CodeMirror {
   border-radius: 3px;
+}
+/* line 12, ../static/sass/_create.scss */
+.create-bundle .create-bundle-button {
+  margin-top: -6px;
+  color: #fff;
+  -webkit-transition: background-color 200ms linear;
+  -o-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
+}
+/* line 18, ../static/sass/_create.scss */
+.create-bundle #duplicate-name {
+  display: none;
 }

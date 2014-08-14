@@ -60,6 +60,8 @@ fish-hooks is a repository for fish shell functions
         'Flask-Assets',
         'jsmin',
         'cssmin',
+        'ujson',
+        'awesome-slugify',
     ],
     extras_require={
         'tests': tests_require,

@@ -5,13 +5,17 @@
         margin-top: 30px;
     }
 
-    #bundle-name {
-        height: 58px;
-        font-size: 24px;
-        line-height: 32px;
-    }
-
     .CodeMirror {
         border-radius: 3px;
+    }
+
+    .create-bundle-button {
+        margin-top: -6px;
+        color: #fff;
+        @include transition(background-color 200ms linear);
+    }
+
+    #duplicate-name {
+        display: none;
     }
 }

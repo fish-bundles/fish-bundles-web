@@ -4,6 +4,8 @@ from flask import Flask, request, url_for, flash, redirect, g, session, render_t
 from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.assets import Environment, Bundle
+from ujson import loads, dumps
+from slugify import slugify
 
 app = Flask(__name__)
 github = GitHub()
@@ -35,10 +37,43 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/create-bundle")
+@app.route("/create-bundle", methods=['GET'])
 @authenticated
 def create_bundle():
     return render_template('create.html')
+
+
+@app.route("/save-bundle", methods=['POST'])
+@authenticated
+def save_bundle():
+    from fishhooks.models import Bundle, BundleFile
+
+    bundle_data = loads(request.form['obj'])
+    try:
+        category = int(bundle_data['category'])
+    except ValueError:
+        category = 4
+
+    exists = Bundle.query.filter_by(name=bundle_data['name']).first()
+    if exists:
+        return dumps({
+            'result': 'duplicate_name',
+            'slug': None
+        })
+
+    bundle = Bundle(name=bundle_data['name'], slug=slugify(bundle_data['name'].lower()), category=category, author=g.user)
+    db.session.add(bundle)
+
+    db.session.add(BundleFile(name='readme.md', file_type='markdown', contents=bundle_data['readme'], bundle=bundle))
+    db.session.add(BundleFile(name='%s.fish' % bundle.slug, file_type='fish', contents=bundle_data['main'], bundle=bundle))
+
+    db.session.flush()
+    db.session.commit()
+
+    return dumps({
+        'result': 'ok',
+        'slug': bundle.slug
+    })
 
 
 @app.route('/authenticate')
