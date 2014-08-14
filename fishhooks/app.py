@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import Flask, request, url_for, flash, redirect, g, session, render_template
+from flask import Flask, request, url_for, flash, redirect, g, session, render_template, abort
 from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.assets import Environment, Bundle
@@ -35,6 +35,17 @@ def authenticated(f):
 @app.route("/")
 def index():
     return render_template('index.html')
+
+
+@app.route("/bundles/<bundle_slug>")
+def show_bundle(bundle_slug):
+    from fishhooks.models import Bundle
+
+    bundle = Bundle.query.filter_by(slug=bundle_slug).first()
+    if not bundle:
+        abort(404)
+
+    return render_template('show_bundle.html', bundle=bundle)
 
 
 @app.route("/create-bundle", methods=['GET'])
