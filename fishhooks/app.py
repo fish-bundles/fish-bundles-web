@@ -7,6 +7,9 @@ from flask.ext.assets import Environment, Bundle
 from ujson import loads, dumps
 from slugify import slugify
 
+MARKDOWN = 1
+FISH = 2
+
 app = Flask(__name__)
 github = GitHub()
 assets = Environment(app)
@@ -75,8 +78,8 @@ def save_bundle():
     bundle = Bundle(name=bundle_data['name'], slug=slugify(bundle_data['name'].lower()), category=category, author=g.user)
     db.session.add(bundle)
 
-    db.session.add(BundleFile(name='readme.md', file_type='markdown', contents=bundle_data['readme'], bundle=bundle))
-    db.session.add(BundleFile(name='%s.fish' % bundle.slug, file_type='fish', contents=bundle_data['main'], bundle=bundle))
+    db.session.add(BundleFile(name='readme.md', file_type=MARKDOWN, contents=bundle_data['readme'], bundle=bundle))
+    db.session.add(BundleFile(name='%s.fish' % bundle.slug, file_type=FISH, contents=bundle_data['main'], bundle=bundle))
 
     db.session.flush()
     db.session.commit()
