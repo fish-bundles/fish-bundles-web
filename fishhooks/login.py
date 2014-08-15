@@ -1,11 +1,11 @@
-from flask import request, url_for, flash, redirect, g, session, render_template
+from flask import request, url_for, flash, redirect, session, render_template
 
 from fishhooks.app import app, db, github
 
 
 @app.route('/authenticate')
 def authenticate():
-    return github.authorize()
+    return github.authorize(scope='user:email,read:org')
 
 
 @app.route('/login')

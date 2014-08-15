@@ -6,6 +6,9 @@ from fishhooks.app import app, db, github
 from fishhooks.decorators import authenticated
 from fishhooks.git import update_user_repos
 
+MARKDOWN = 1
+FISH = 2
+
 
 @app.route("/")
 def index():
@@ -68,7 +71,7 @@ def save_bundle():
     bundle = Bundle(slug=repository.slug, repo=repository, readme=contents, category=category, author=g.user)
     db.session.add(bundle)
 
-    db.session.add(BundleFile(path=repo_readme['name'], file_type='markdown', contents=contents, bundle=bundle))
+    db.session.add(BundleFile(path=repo_readme['name'], file_type=MARKDOWN, contents=contents, bundle=bundle))
 
     db.session.flush()
     db.session.commit()

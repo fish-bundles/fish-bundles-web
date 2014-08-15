@@ -3,9 +3,6 @@ from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
-MARKDOWN = 1
-FISH = 2
-
 app = Flask(__name__)
 github = GitHub()
 

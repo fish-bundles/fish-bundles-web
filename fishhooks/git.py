@@ -99,6 +99,7 @@ def update_user_repos():
     Organization.query.filter_by(user=g.user).delete()
 
     organizations = get_user_orgs()
+
     for organization in organizations:
         org = Organization(org_name=organization['name'], user=g.user)
         db.session.add(org)
