@@ -28,44 +28,31 @@ end
 
 class CreateCtrl
     constructor: (@element) ->
-        @initializeCodeMirror()
+        @selectedRepository = null
+        @createDataTables()
         @bindEvents()
 
-    initializeCodeMirror: ->
-        extras =
-            'F11': (cm) ->
-                cm.setOption("fullScreen", !cm.getOption("fullScreen"))
-            'Esc': (cm) ->
-                cm.setOption("fullScreen", false) if cm.getOption("fullScreen")
+    createDataTables: ->
+        @tbl = @element.find('#tbl-repositories')
+        @tbl.dataTable
+            "info":     false
 
-        el = $('.plugin-main-fish', @element)[0]
-        @mainMirror = @createCodeMirror(el, 'shell', extras, bundleMainTemplate)
-
-        extras['Enter'] = 'newlineAndIndentContinueMarkdownList'
-        el = $('.readme-md', @element)[0]
-        @readmeMirror = @createCodeMirror(el, 'markdown', extras, markdownTemplate)
-
-    createCodeMirror: (el, mode, extraKeys, value) ->
-        CodeMirror(el,
-            mode: mode,
-            lineNumbers: true,
-            theme: 'monokai',
-            extraKeys: extraKeys,
-            styleActiveLine: true,
-            value: value
+        @tbl.on('click', 'tr', (ev) =>
+            @tbl.$('tr.selected').removeClass('selected')
+            row = $(ev.currentTarget)
+            row.addClass('selected')
+            @selectedRepository = row.attr('data-selected-id')
         )
 
     bindEvents: ->
         @elements =
-            name: @element.find('#bundle-name')
             category: @element.find('#bundle-category')
             warning: @element.find('#duplicate-name')
+            noRepo: @element.find('#no-repo')
 
         @element.find('.create-bundle-button').bind('click', (ev) =>
             obj =
-                readme: @readmeMirror.getValue()
-                main: @mainMirror.getValue()
-                name: @elements.name.val()
+                repository: @selectedRepository
                 category: @elements.category.val()
 
             @createNewBundle(obj)
@@ -73,6 +60,13 @@ class CreateCtrl
 
     createNewBundle: (obj) ->
         @elements.warning.hide()
+
+        if not @selectedRepository?
+            @elements.noRepo.show()
+            @elements.noRepo.fadeIn()
+            return
+
+        @elements.noRepo.hide()
 
         $.ajax({
             type: "POST",

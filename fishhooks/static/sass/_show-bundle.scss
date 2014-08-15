@@ -1,0 +1,9 @@
+.show-bundle {
+    .markdown {
+        margin-top: 50px;
+
+        > h1:first-of-type {
+            margin-top: 10px;
+        }
+    }
+}

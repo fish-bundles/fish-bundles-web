@@ -15,7 +15,16 @@
         @include transition(background-color 200ms linear);
     }
 
-    #duplicate-name {
+    .first-row {
+        margin-bottom: 20px;
+    }
+
+    #duplicate-name, #no-repo {
         display: none;
+    }
+
+    .repository {
+        height: 240px;
+        margin-bottom: 15px;
     }
 }

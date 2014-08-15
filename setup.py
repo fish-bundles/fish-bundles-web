@@ -62,6 +62,7 @@ fish-hooks is a repository for fish shell functions
         'cssmin',
         'ujson',
         'awesome-slugify',
+        'markdown',
     ],
     extras_require={
         'tests': tests_require,

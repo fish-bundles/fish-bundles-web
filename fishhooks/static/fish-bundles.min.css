@@ -8214,6 +8214,24 @@ footer p {
   transition: background-color 200ms linear;
 }
 /* line 18, ../static/sass/_create.scss */
-.create-bundle #duplicate-name {
+.create-bundle .first-row {
+  margin-bottom: 20px;
+}
+/* line 22, ../static/sass/_create.scss */
+.create-bundle #duplicate-name, .create-bundle #no-repo {
   display: none;
+}
+/* line 26, ../static/sass/_create.scss */
+.create-bundle .repository {
+  height: 240px;
+  margin-bottom: 15px;
+}
+
+/* line 2, ../static/sass/_show-bundle.scss */
+.show-bundle .markdown {
+  margin-top: 50px;
+}
+/* line 5, ../static/sass/_show-bundle.scss */
+.show-bundle .markdown > h1:first-of-type {
+  margin-top: 10px;
 }
