@@ -32,7 +32,7 @@ class Install(Lister):
             )
 
         bundles = environ.get('__fish_bundles_list', '')
-        bundles = list(set(bundles.split(':')))
+        bundles = list(set([bundle for bundle in bundles.split(':') if bundle]))
         bundles = ['fish-bundles/root-bundle-fish-bundle'] + bundles
         server = environ.get('__fish_bundles_host', 'http://bundles.fish/')
         bundle_path = environ.get('__fish_bundles_root', expanduser('~/.config/fish/bundles'))
@@ -63,7 +63,8 @@ class Install(Lister):
             logging.info('%s installed successfully.' % bundle['repo'])
             installed_bundles.append((author, repo, bundle['version']))
 
-        shutil.rmtree(bundle_path)
+        if exists(bundle_path):
+            shutil.rmtree(bundle_path)
         shutil.copytree(tmp_dir, bundle_path)
 
         return installed_bundles
