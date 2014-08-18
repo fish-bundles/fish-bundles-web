@@ -4,7 +4,7 @@ from sqlalchemy import exists
 
 from fishhooks.app import app, db, github
 from fishhooks.decorators import authenticated
-from fishhooks.git import update_user_repos
+from fishhooks.git import update_user_repos, get_repo_tags
 
 MARKDOWN = 1
 FISH = 2
@@ -13,6 +13,37 @@ FISH = 2
 @app.route("/")
 def index():
     return render_template('index.html')
+
+
+class BundleResolver(object):
+    def __init__(self, bundles):
+        self.bundles = bundles
+
+    def resolve(self):
+        bundles = []
+
+        for bundle in self.bundles:
+            tags = get_repo_tags(bundle)
+            last_tag = tags[0]
+            bundles.append({
+                'repo': last_tag['repo'],
+                'version': last_tag['version']['name'],
+                'commit': last_tag['commit'],
+                'zip': last_tag['zip']
+            })
+
+        return bundles
+
+
+@app.route("/my-bundles")
+def my_bundles():
+    bundles = loads(request.args.get('bundles', ''))
+    resolver = BundleResolver(bundles)
+
+    return dumps({
+        'result': 'bundles-found',
+        'bundles': resolver.resolve()
+    })
 
 
 @app.route("/bundles/<bundle_slug>")

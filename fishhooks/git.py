@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 
 from flask import g
+from semantic_version import Version
 
 from fishhooks.app import github, db, app
 
@@ -16,7 +17,7 @@ def do_get(url, page=None):
     return github.raw_request('GET', url)
 
 
-def get_list(url, item_parse):
+def get_list(url, item_parse, allow_none=False):
     items = []
     first_page = True
     page = None
@@ -27,7 +28,10 @@ def get_list(url, item_parse):
         data = response.json()
 
         for item in data:
-            items.append(item_parse(item))
+            item_data = item_parse(item)
+            if item_data is None:
+                continue
+            items.append(item_data)
 
         first_page = False
         page = has_next(response)
@@ -52,6 +56,31 @@ def has_next(response):
             return int(matches.groups()[0])
 
     return None
+
+
+def __parse_repo_tag(repo):
+    def handle(tag_data):
+        try:
+            version = Version(tag_data['name'])
+        except:
+            return None
+
+        return {
+            'repo': repo,
+            'version': {
+                'name': tag_data['name'],
+                'object': version,
+            },
+            'commit': tag_data['commit']['sha'],
+            'zip': tag_data['zipball_url']
+        }
+    return handle
+
+
+def get_repo_tags(repo):
+    result = get_list("repos/%s/tags" % repo, __parse_repo_tag(repo))
+
+    return list(reversed(sorted(result, key=lambda item: item['version']['object'])))
 
 
 def get_user_orgs():

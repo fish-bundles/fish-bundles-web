@@ -63,6 +63,8 @@ fish-hooks is a repository for fish shell functions
         'ujson',
         'awesome-slugify',
         'markdown',
+        'cliff',
+        'semantic_version',
     ],
     extras_require={
         'tests': tests_require,
@@ -71,6 +73,10 @@ fish-hooks is a repository for fish shell functions
         'console_scripts': [
             # add cli scripts here in this form:
             'fish-hooks-api=fishhooks.app:main',
+            'fb=fishhooks.cli:main',
+        ],
+        'fb': [
+            'install = fishhooks.cli.install:Install',
         ],
     },
 )
