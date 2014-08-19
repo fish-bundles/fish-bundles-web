@@ -2,9 +2,9 @@ from flask import request, g, render_template, abort
 from ujson import loads, dumps
 from sqlalchemy import exists
 
-from fishhooks.app import app, db, github
-from fishhooks.decorators import authenticated
-from fishhooks.git import update_user_repos, get_repo_tags
+from fish_bundles_web.app import app, db, github
+from fish_bundles_web.decorators import authenticated
+from fish_bundles_web.git import update_user_repos, get_repo_tags
 
 MARKDOWN = 1
 FISH = 2
@@ -48,7 +48,7 @@ def my_bundles():
 
 @app.route("/bundles/<bundle_slug>")
 def show_bundle(bundle_slug):
-    from fishhooks.models import Bundle
+    from fish_bundles_web.models import Bundle
 
     bundle = Bundle.query.filter_by(slug=bundle_slug).first()
     if not bundle:
@@ -60,7 +60,7 @@ def show_bundle(bundle_slug):
 @app.route("/create-bundle", methods=['GET'])
 @authenticated
 def create_bundle():
-    from fishhooks.models import Repository, Organization, Bundle
+    from fish_bundles_web.models import Repository, Organization, Bundle
     update_user_repos()
     orgs = Organization.query.filter_by(user=g.user).order_by(Organization.org_name).all()
 
@@ -73,7 +73,7 @@ def create_bundle():
 @app.route("/save-bundle", methods=['POST'])
 @authenticated
 def save_bundle():
-    from fishhooks.models import Bundle, BundleFile, Repository
+    from fish_bundles_web.models import Bundle, BundleFile, Repository
 
     bundle_data = loads(request.form['obj'])
     try:

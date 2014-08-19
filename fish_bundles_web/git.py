@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import g
 from semantic_version import Version
 
-from fishhooks.app import github, db, app
+from fish_bundles_web.app import github, db, app
 
 
 PAGER_REGEX = re.compile(r'page=(\d+?)')
@@ -118,7 +118,7 @@ def needs_update(user):
 
 
 def update_user_repos():
-    from fishhooks.models import Repository, Organization
+    from fish_bundles_web.models import Repository, Organization
 
     if g.user is None or not needs_update(g.user):
         return

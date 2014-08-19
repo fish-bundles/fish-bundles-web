@@ -1,6 +1,6 @@
 from flask.ext.assets import Environment, Bundle
 
-from fishhooks.app import app
+from fish_bundles_web.app import app
 
 assets = Environment(app)
 
@@ -32,9 +32,6 @@ def init_bundles():
     )
 
     css_files = [
-        'vendor/codemirror/lib/codemirror.css',
-        'vendor/codemirror/addon/display/fullscreen.css',
-        'vendor/codemirror/theme/monokai.css',
         'vendor/datatables/media/css/jquery.dataTables.css',
         'stylesheets/dataTables.bootstrap.css',
     ]
@@ -49,7 +46,8 @@ def init_bundles():
     css = Bundle(*css_files, depends=["**/*.scss"], filters=['compass', 'cssmin'], output='fish-bundles.min.css')
     assets.register('css_app', css)
 
-    assets.auto_build = True
-    assets.debug = True
-    assets.manifest = "file"
-    assets.cache = False
+    if app.debug:
+        assets.auto_build = True
+        assets.debug = True
+        assets.manifest = "file"
+        assets.cache = False

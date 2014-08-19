@@ -1,4 +1,4 @@
-fishfuncs
-=========
+fish-bundles-web
+================
 
-fishfuncs is a repository for fish shelll reusable functions.
+fish-bundles-web is the website for bundles.fish. This is only interesting if you want to host your own internal fish-shell bundles repository.

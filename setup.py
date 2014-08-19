@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# This file is part of fish-hooks.
-# https://github.com/heynemann/fish-hooks
+# This file is part of fish-bundles..
+# https://github.com/fish-bundles/fish-bundles-web
 
 # Licensed under the MIT license:
 # http://www.opensource.org/licenses/MIT-license
@@ -10,7 +10,7 @@
 
 
 from setuptools import setup, find_packages
-from fishhooks import __version__
+from fish_bundles_web import __version__
 
 tests_require = [
     'mock',
@@ -25,16 +25,16 @@ tests_require = [
 ]
 
 setup(
-    name='fish-hooks',
+    name='fish-bundles-web',
     version=__version__,
-    description='fish-hooks is a repository for fish shell functions',
+    description='fish-bundles-web is the website for fish-bundles',
     long_description='''
-fish-hooks is a repository for fish shell functions
+fish-bundles-web is the website for fish-bundles.
 ''',
     keywords='fish shell repository share',
     author='Bernardo Heynemann',
     author_email='heynemann@gmail.com',
-    url='https://github.com/heynemann/fish-hooks',
+    url='https://github.com/fish-bundles/fish-bundles-web',
     license='MIT',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -48,8 +48,6 @@ fish-hooks is a repository for fish shell functions
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        # add your dependencies here
-        # remember to use 'package-name>=x.y.z,<x.y+1.0' notation (this way you get bugfixes)
         'flask',
         'alembic',
         'mysql-python',
@@ -63,7 +61,6 @@ fish-hooks is a repository for fish shell functions
         'ujson',
         'awesome-slugify',
         'markdown',
-        'cliff',
         'semantic_version',
     ],
     extras_require={
@@ -71,12 +68,7 @@ fish-hooks is a repository for fish shell functions
     },
     entry_points={
         'console_scripts': [
-            # add cli scripts here in this form:
-            'fish-hooks-api=fishhooks.app:main',
-            'fb=fishhooks.cli:main',
-        ],
-        'fb': [
-            'install = fishhooks.cli.install:Install',
+            'fish-bundles-web=fish_bundles_web.app:main',
         ],
     },
 )

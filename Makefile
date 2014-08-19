@@ -1,5 +1,5 @@
-# This file is part of fish-hooks.
-# https://github.com/heynemann/fish-hooks
+# This file is part of fish-bundles.
+# https://github.com/fish-bundles/fish-bundles-web
 
 # Licensed under the MIT license:
 # http://www.opensource.org/licenses/MIT-license
@@ -23,7 +23,7 @@ setup:
 	@pip install -U -e .\[tests\]
 
 run:
-	@fish-hooks-api
+	@fish-bundles-web
 
 # test your application (tests in the tests/ directory)
 test: unit
@@ -37,23 +37,23 @@ coverage-html: unit
 	@coverage html -d cover
 
 migration:
-	@cd fishhooks/ && alembic revision -m "$(DESC)"
+	@cd fish_bundles_web/ && alembic revision -m "$(DESC)"
 
 drop:
-	@-cd fishhooks/ && alembic downgrade base
+	@-cd fish_bundles_web/ && alembic downgrade base
 	@$(MAKE) drop_now
 
 drop_now:
-	@mysql -u root -e "DROP DATABASE IF EXISTS fishhooks; CREATE DATABASE IF NOT EXISTS fishhooks"
+	@mysql -u root -e "DROP DATABASE IF EXISTS fish_bundles_web; CREATE DATABASE IF NOT EXISTS fish_bundles_web"
 	@echo "DB RECREATED"
 
 drop_test:
 	@-cd tests/ && alembic downgrade base
-	@mysql -u root -e "DROP DATABASE IF EXISTS test_fishhooks; CREATE DATABASE IF NOT EXISTS test_fishhooks"
+	@mysql -u root -e "DROP DATABASE IF EXISTS test_fish_bundles_web; CREATE DATABASE IF NOT EXISTS test_fish_bundles_web"
 	@echo "DB RECREATED"
 
 data db:
-	@cd fishhooks/ && alembic upgrade head
+	@cd fish_bundles_web/ && alembic upgrade head
 
 data_test:
 	@cd tests/ && alembic upgrade head
@@ -63,4 +63,4 @@ tox:
 	@tox
 
 #docs:
-	#@cd fishhooks/docs && make html && open _build/html/index.html
+	#@cd fish_bundles_web/docs && make html && open _build/html/index.html

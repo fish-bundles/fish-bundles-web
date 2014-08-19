@@ -1,6 +1,6 @@
 from flask import request, url_for, flash, redirect, session, render_template
 
-from fishhooks.app import app, db, github
+from fish_bundles_web.app import app, db, github
 
 
 @app.route('/authenticate')
@@ -30,7 +30,7 @@ def authorized(oauth_token):
 
 
 def get_user_from_db(user_data):
-    from fishhooks.models import User
+    from fish_bundles_web.models import User
     user = User.query.filter_by(username=user_data['login']).first()
     if user is not None:
         return user

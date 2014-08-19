@@ -2,7 +2,7 @@ from slugify import slugify
 import markdown
 from sqlalchemy.sql.expression import ClauseElement
 
-from fishhooks.app import db
+from fish_bundles_web.app import db
 
 
 def get_or_create(model, defaults=None, **kwargs):
