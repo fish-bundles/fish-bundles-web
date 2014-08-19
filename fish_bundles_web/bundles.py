@@ -8,18 +8,18 @@ assets = Environment(app)
 def init_bundles():
     base_libs = [
         'vendor/jquery/dist/jquery.js',
-        'vendor/bootstrap-sass-official/assets/javascripts/bootstrap.js',
         'vendor/datatables/media/js/jquery.dataTables.js',
         'scripts/dataTables.bootstrap.js',
+        # 'vendor/bootstrap-sass-official/assets/javascripts/bootstrap.js',
     ]
-    js = Bundle(*base_libs, filters=['jsmin'], output='fish-bundles.base.min.js')
+    js = Bundle(*base_libs, filters=['jsmin'], output='scripts/fish-bundles.base.min.js')
     assets.register('js_base', js)
 
     app_files = [
         'scripts/main.coffee',
         'scripts/create.coffee',
     ]
-    js = Bundle(*app_files, filters=['coffeescript', 'jsmin'], output='fish-bundles.app.min.js')
+    js = Bundle(*app_files, filters=['coffeescript', 'jsmin'], output='scripts/fish-bundles.app.min.js')
     assets.register('js_app', js)
 
     app.config['COMPASS_PLUGINS'] = ['bootstrap-sass']
@@ -36,14 +36,14 @@ def init_bundles():
         'stylesheets/dataTables.bootstrap.css',
     ]
 
-    css = Bundle(*css_files, filters=['cssmin'], output='fish-bundles.base.min.css')
+    css = Bundle(*css_files, filters=['cssmin'], output='stylesheets/fish-bundles.base.min.css')
     assets.register('css_base', css)
 
     css_files = [
         'sass/main.scss'
     ]
 
-    css = Bundle(*css_files, depends=["**/*.scss"], filters=['compass', 'cssmin'], output='fish-bundles.min.css')
+    css = Bundle(*css_files, depends=["**/*.scss"], filters=['compass', 'cssmin'], output='stylesheets/fish-bundles.min.css')
     assets.register('css_app', css)
 
     if app.debug:
