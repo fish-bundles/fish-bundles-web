@@ -1,6 +1,7 @@
 from slugify import slugify
 import markdown
 from sqlalchemy.sql.expression import ClauseElement
+from semantic_version import Version
 
 from fish_bundles_web.app import db
 
@@ -37,6 +38,7 @@ class Bundle(db.Model):
     category = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime)
     last_updated_at = db.Column(db.DateTime)
+    install_count = db.Column(db.Integer, nullable=False, default=0)
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     author = db.relationship(User, backref='bundles')
@@ -83,6 +85,8 @@ class Repository(db.Model):
     organization_id = db.Column(db.Integer, db.ForeignKey('organizations.id'), nullable=True)
     organization = db.relationship(Organization)
 
+    last_updated_tags = db.Column(db.DateTime)
+
     @property
     def slug(self):
         return slugify(self.repo_name.lower())
@@ -94,3 +98,43 @@ class Repository(db.Model):
     @property
     def name(self):
         return self.repo_name.split('/')[1]
+
+    @property
+    def taglist(self):
+        tags = []
+
+        for tag in self.tags:
+            tags.append({
+                'repo': self.repo_name,
+                'version': {
+                    'name': tag.tag_name,
+                    'object': tag.version,
+                },
+                'commit': tag.commit_hash,
+                'zip': tag.zip_url
+            })
+
+        return tags
+
+    @property
+    def last_tag(self):
+        if not self.tags:
+            return None
+
+        return sorted(self.tags, key=lambda item: item.version)[-1]
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer, primary_key=True)
+    tag_name = db.Column(db.String(255), nullable=False)
+    commit_hash = db.Column(db.String(255), nullable=False)
+    zip_url = db.Column(db.String(2000), nullable=False)
+
+    repository_id = db.Column(db.Integer, db.ForeignKey('repositories.id'), nullable=False)
+    repository = db.relationship(Repository, backref='tags')
+
+    @property
+    def version(self):
+        return Version(self.tag_name)

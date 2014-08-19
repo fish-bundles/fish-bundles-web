@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import request, g, render_template, abort
 from ujson import loads, dumps
 from sqlalchemy import exists
@@ -12,18 +14,30 @@ FISH = 2
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    from fish_bundles_web.models import Bundle
+    bundles = db.session.query(Bundle)[:50]
+    return render_template('index.html', bundles=bundles)
 
 
 class BundleResolver(object):
     def __init__(self, bundles):
         self.bundles = bundles
+        self.bundle_set = set(self.bundles)
 
     def resolve(self):
+        from fish_bundles_web.models import Bundle, Repository
+
         bundles = []
 
-        for bundle in self.bundles:
-            tags = get_repo_tags(bundle)
+        db_bundles = db.session.query(Bundle).filter(Repository.repo_name.in_(self.bundles)).all()
+        db_bundle_set = set([db_bundle.repo.repo_name for db_bundle in db_bundles])
+
+        if len(db_bundles) != len(self.bundle_set):
+            not_found_bundles = self.bundle_set - db_bundle_set
+            return None, list(not_found_bundles)
+
+        for bundle in db_bundles:
+            tags = get_repo_tags(bundle.repo.repo_name)
             last_tag = tags[0]
             bundles.append({
                 'repo': last_tag['repo'],
@@ -31,18 +45,34 @@ class BundleResolver(object):
                 'commit': last_tag['commit'],
                 'zip': last_tag['zip']
             })
+            bundle.install_count += 1
 
-        return bundles
+        db.session.flush()
+        return bundles, None
 
 
 @app.route("/my-bundles")
 def my_bundles():
-    bundles = loads(request.args.get('bundles', ''))
+    bundles = loads(str(request.args.get('bundles', '')))
     resolver = BundleResolver(bundles)
+
+    resolved, error = resolver.resolve()
+
+    if error is not None:
+        db.session.rollback()
+        return dumps({
+            'result': 'bundles-not-found',
+            'bundles': None,
+            'error': "Some bundles could not be found (%s). Maybe there's no bundle created at bundles.fish for that git repo?" % (
+                ", ".join(error)
+            )
+        })
+
+    db.session.commit()
 
     return dumps({
         'result': 'bundles-found',
-        'bundles': resolver.resolve()
+        'bundles': resolved
     })
 
 
@@ -89,6 +119,9 @@ def save_bundle():
             'slug': None
         })
 
+    # just pre-loading tags
+    get_repo_tags(repository.repo_name)
+
     exists = Bundle.query.filter_by(repo=repository).first()
     if exists:
         return dumps({
@@ -99,7 +132,7 @@ def save_bundle():
     repo_readme = github.get("repos/%s/readme" % repository.repo_name)
     contents = repo_readme['content'].decode(repo_readme['encoding'])
 
-    bundle = Bundle(slug=repository.slug, repo=repository, readme=contents, category=category, author=g.user)
+    bundle = Bundle(slug=repository.slug, repo=repository, readme=contents, category=category, author=g.user, last_updated_at=datetime.now())
     db.session.add(bundle)
 
     db.session.add(BundleFile(path=repo_readme['name'], file_type=MARKDOWN, contents=contents, bundle=bundle))

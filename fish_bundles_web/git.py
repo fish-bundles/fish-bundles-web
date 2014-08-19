@@ -61,26 +61,52 @@ def has_next(response):
 def __parse_repo_tag(repo):
     def handle(tag_data):
         try:
-            version = Version(tag_data['name'])
+            Version(tag_data['name'])
         except:
             return None
 
         return {
             'repo': repo,
-            'version': {
-                'name': tag_data['name'],
-                'object': version,
-            },
+            'version': tag_data['name'],
             'commit': tag_data['commit']['sha'],
             'zip': tag_data['zipball_url']
         }
     return handle
 
 
-def get_repo_tags(repo):
-    result = get_list("repos/%s/tags" % repo, __parse_repo_tag(repo))
+def __should_update_tags(repository):
+    must_update = False
+    if repository.last_updated_tags is None:
+        must_update = True
+    else:
+        expiration = app.config['REPOSITORY_TAGS_EXPIRATION_MINUTES']
+        must_update = (datetime.now() - repository.last_updated_tags).total_seconds() > expiration * 60
 
-    return list(reversed(sorted(result, key=lambda item: item['version']['object'])))
+    return must_update
+
+
+def get_repo_tags(repo):
+    from fish_bundles_web.models import Repository, Tag
+
+    repository = Repository.query.filter_by(repo_name=repo).first()
+    if repository is None:
+        raise RuntimeError("Can't find repository %s. Can't update tags for non-existent repo." % repo)
+
+    if __should_update_tags(repository):
+        result = get_list("repos/%s/tags" % repo, __parse_repo_tag(repo))
+        Tag.query.filter_by(repository=repository).delete()
+
+        for tag in result:
+            repository.tags.append(Tag(
+                tag_name=tag['version'],
+                commit_hash=tag['commit'],
+                zip_url=tag['zip']
+            ))
+
+        repository.last_updated_tags = datetime.now()
+        db.session.flush()
+
+    return list(reversed(sorted(repository.taglist, key=lambda item: item['version']['object'])))
 
 
 def get_user_orgs():

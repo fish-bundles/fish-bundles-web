@@ -24,6 +24,7 @@ def main():
 
     app.config['MAX_GITHUB_REQUESTS'] = 15
     app.config['REPOSITORY_SYNC_EXPIRATION_MINUTES'] = 60 * 24 * 7
+    app.config['REPOSITORY_TAGS_EXPIRATION_MINUTES'] = 3
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/fish_bundles_web'
     app.config['GITHUB_CLIENT_ID'] = '0cd596cdcfb372e75fb0'
     app.config['GITHUB_CLIENT_SECRET'] = '14569ca47300ab7d30ebe784a10efe0f9ce93981'
