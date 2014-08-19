@@ -2,12 +2,22 @@
 
 {% block main %}
 <div class="container show-bundle">
+    <div class="pull-right tags">
+        <div class="title">VERSIONS</div>
+        <ul class="list-unstyled">
+            {% for tag in bundle.repo.all_tags %}
+            <li>{% if tag.tag_name == bundle.repo.last_tag.tag_name %}<span class="glyphicon glyphicon-star"></span>{% endif %}{{ tag.tag_name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <div class="markdown">
         <span class="label label-primary">{{ bundle.repo.repo_name }}</span>
         {% autoescape false %}
             {{ bundle.readme_html }}
         {% endautoescape %}
     </div>
+
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */

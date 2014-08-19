@@ -2,12 +2,12 @@
 
 {% block main %}
 <div class="container">
-    <h2>Categories</h2>
-    <ul class="nav nav-pills categories nav-justified">
-        {% for i in range(5) %}
-        <li><a href="#">Language Support</a></li>
-        {% endfor %}
-    </ul>
+    <!--<h2>Categories</h2>-->
+    <!--<ul class="nav nav-pills categories nav-justified">-->
+        <!--{% for i in range(5) %}-->
+        <!--<li><a href="#">Language Support</a></li>-->
+        <!--{% endfor %}-->
+    <!--</ul>-->
     <div class="category">
         <div class="panel panel-default">
             <div class="list-group">
@@ -18,7 +18,7 @@
                     <p class="label-container">
                         <span class="label label-success">By {{ bundle.author.name }}</span>
                         <span class="label label-primary">{{ bundle.repo.tags|length }} releases</span>
-                        <span class="last-updated">Last Updated {{ bundle.last_updated_at }}</span>
+                        <span class="pull-right last-updated">Last Updated {{ bundle.last_updated_at }}</span>
                     </p>
                 </a>
                 {% endfor %}

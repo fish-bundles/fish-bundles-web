@@ -117,11 +117,15 @@ class Repository(db.Model):
         return tags
 
     @property
+    def all_tags(self):
+        return list(reversed(sorted(self.tags, key=lambda item: item.version)))
+
+    @property
     def last_tag(self):
         if not self.tags:
             return None
 
-        return sorted(self.tags, key=lambda item: item.version)[-1]
+        return self.all_tags[0]
 
 
 class Tag(db.Model):

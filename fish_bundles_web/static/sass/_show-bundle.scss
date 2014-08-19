@@ -1,6 +1,32 @@
 .show-bundle {
+    /*position: relative;*/
+
+    .tags {
+        margin-top: 50px;
+        margin-bottom: 40px;
+        background: #fff;
+        border: 2px solid rgba(0,39,59,.2);
+        border-radius: 4px;
+        padding: 10px;
+        min-width: 120px;
+        text-align: center;
+
+        .title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        li {
+            .glyphicon {
+                margin-left: -15px;
+            }
+        }
+    }
+
     .markdown {
         margin-top: 50px;
+        margin-bottom: 40px;
 
         > h1:first-of-type {
             margin-top: 10px;
