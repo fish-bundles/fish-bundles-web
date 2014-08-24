@@ -18,7 +18,7 @@ Config.define('APP_SECRET_KEY', None, 'SECRET KEY TO CONFIGURE BZZ', 'Authentica
 
 Config.define('MAX_GITHUB_REQUESTS', 15, 'Max number of github requests to do sequentially', 'GitHub')
 Config.define('REPOSITORY_SYNC_EXPIRATION_MINUTES', 7 * DAY / MINUTE, 'Repository sync expiration', 'GitHub')
-Config.define('REPOSITORY_TAG_EXPIRATION_MINUTES', 3, 'Repository sync expiration', 'GitHub')
+Config.define('REPOSITORY_TAGS_EXPIRATION_MINUTES', 3, 'Repository sync expiration', 'GitHub')
 
 Config.define('SQLALCHEMY_DATABASE_URI', 'mysql://root@localhost/fish_bundles_web', 'MySQL connection string', 'DB')
 
