@@ -1,1 +1,31 @@
-<a href="/authenticate">login</a>
+<html>
+    <head>
+        <title>fish-bundles - your source for fish-shell functions</title>
+
+        {% assets "css_base" %}
+            <link href="{{ ASSET_URL }}" rel="stylesheet">
+        {% endassets %}
+
+        {% assets "css_app" %}
+            <link href="{{ ASSET_URL }}" rel="stylesheet">
+        {% endassets %}
+    </head>
+    <body class="login-page">
+        <div class="login">
+            <div class="login-logo"></div>
+            <p>Fish-Bundles requires <strong>read-only</strong> access to meta-data (name and tags) about your github repositories.</p>
+            <p>Your information won't be shared with any third-party ever under any circumstance.</p>
+            <p>Please login with your github account by clicking in the button below.</p>
+            <a class="login-button btn btn-primary btn-lg" href="/authenticate">login</a>
+        </div>
+
+        {% assets "js_base" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% assets "js_app" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+        {% block script %}{% endblock %}
+    </body>
+</html>
+

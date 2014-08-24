@@ -2,22 +2,16 @@
 
 {% block main %}
 <div class="container">
-    <!--<h2>Categories</h2>-->
-    <!--<ul class="nav nav-pills categories nav-justified">-->
-        <!--{% for i in range(5) %}-->
-        <!--<li><a href="#">Language Support</a></li>-->
-        <!--{% endfor %}-->
-    <!--</ul>-->
     <div class="category">
         <div class="panel panel-default">
             <div class="list-group">
                 {% for bundle in bundles %}
                 <a href="/bundles/{{ bundle.slug }}" class="list-group-item">
-                    <h4><span class="glyphicon glyphicon-download icon"></span>{{ bundle.repo.repo_name }}{% if bundle.repo.last_tag %}<span class="label label-info last-version">{{ bundle.repo.last_tag.tag_name }}</span>{% endif %}<span class="pull-right badge">{{ bundle.install_count }} {% if bundle.install_count > 1 %}installs{% else %}install{% endif %}</span></h4>
+                    <h4><span class="glyphicon glyphicon-download icon"></span>{{ bundle.repo_name }}{% if bundle.last_release %}<span class="label label-info last-version">{{ bundle.repo.last_release.tag_name }}</span>{% endif %}<span class="pull-right badge">{{ bundle.install_count }} {% if bundle.install_count > 1 %}installs{% else %}install{% endif %}</span></h4>
                     <p>{{ bundle.description }}</p>
                     <p class="label-container">
                         <span class="label label-success">By {{ bundle.author.name }}</span>
-                        <span class="label label-primary">{{ bundle.repo.tags|length }} releases</span>
+                        <span class="label label-primary">{{ bundle.releases|length }} releases</span>
                         <span class="pull-right last-updated">Last Updated {{ bundle.last_updated_at }}</span>
                     </p>
                 </a>

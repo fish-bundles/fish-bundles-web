@@ -85,8 +85,8 @@ def __should_update_tags(repository):
     return must_update
 
 
-def get_repo_tags(repo):
-    from fish_bundles_web.models import Repository, Tag
+def get_repo_tags(repo, bundle=None):
+    from fish_bundles_web.models import Bundle, Release, Repository, Tag
 
     repository = Repository.query.filter_by(repo_name=repo).first()
     if repository is None:
@@ -96,12 +96,25 @@ def get_repo_tags(repo):
         result = get_list("repos/%s/tags" % repo, __parse_repo_tag(repo))
         Tag.query.filter_by(repository=repository).delete()
 
+        if bundle is None:
+            bundle = Bundle.query.filter_by(repo_name=repo).first()
+
+        if bundle is not None:
+            Release.query.filter_by(bundle=bundle).delete()
+
         for tag in result:
             repository.tags.append(Tag(
                 tag_name=tag['version'],
                 commit_hash=tag['commit'],
                 zip_url=tag['zip']
             ))
+
+            if bundle is not None:
+                bundle.releases.append(Release(
+                    tag_name=tag['version'],
+                    commit_hash=tag['commit'],
+                    zip_url=tag['zip']
+                ))
 
         repository.last_updated_tags = datetime.now()
         db.session.flush()
@@ -143,20 +156,23 @@ def needs_update(user):
     return (datetime.now() - user.last_synced_repos).total_seconds() > expiration * 60
 
 
-def update_user_repos():
+def update_user_repos(force=False):
     from fish_bundles_web.models import Repository, Organization
 
-    if g.user is None or not needs_update(g.user):
+    if g.user is None or (not force and not needs_update(g.user)):
         return
 
     repos = []
 
-    Organization.query.filter_by(user=g.user).delete()
+    user_repos = dict([(repo.repo_name, repo) for repo in Repository.query.filter_by(user=g.user).all()])
+    user_orgs = dict([(org.org_name, org) for org in Organization.query.filter_by(user=g.user).all()])
 
     organizations = get_user_orgs()
 
     for organization in organizations:
-        org = Organization(org_name=organization['name'], user=g.user)
+        org = user_orgs.get(organization['name'], None)
+        if org is None:
+            org = Organization(org_name=organization['name'], user=g.user)
         db.session.add(org)
         repos += get_org_repos(org)
 
@@ -164,16 +180,15 @@ def update_user_repos():
 
     repos = sorted(repos, key=lambda item: item['name'])
 
-    Repository.query.filter_by(user=g.user).delete()
-
     for repo in repos:
-        db.session.add(
-            Repository(
-                repo_name=repo['name'],
-                organization=repo['org'],
-                user=g.user
+        if repo['name'] not in user_repos:
+            db.session.add(
+                Repository(
+                    repo_name=repo['name'],
+                    organization=repo['org'],
+                    user=g.user
+                )
             )
-        )
 
     g.user.last_synced_repos = datetime.now()
 

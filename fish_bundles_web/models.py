@@ -43,12 +43,23 @@ class Bundle(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     author = db.relationship(User, backref='bundles')
 
-    repo_id = db.Column(db.Integer, db.ForeignKey('repositories.id'), nullable=False)
-    repo = db.relationship('Repository')
+    repo_name = db.Column(db.String(2000), nullable=False, unique=False)
+    org_name = db.Column(db.String(2000), nullable=True, unique=False)
 
     @property
     def readme_html(self):
         return markdown.markdown(self.readme)
+
+    @property
+    def all_releases(self):
+        return list(reversed(sorted(self.releases, key=lambda item: item.version)))
+
+    @property
+    def last_release(self):
+        if not self.releases:
+            return None
+
+        return self.all_releases[0]
 
 
 class BundleFile(db.Model):
@@ -126,6 +137,22 @@ class Repository(db.Model):
             return None
 
         return self.all_tags[0]
+
+
+class Release(db.Model):
+    __tablename__ = "releases"
+
+    id = db.Column(db.Integer, primary_key=True)
+    tag_name = db.Column(db.String(255), nullable=False)
+    commit_hash = db.Column(db.String(255), nullable=False)
+    zip_url = db.Column(db.String(2000), nullable=False)
+
+    bundle_id = db.Column(db.Integer, db.ForeignKey('bundles.id'), nullable=False)
+    bundle = db.relationship(Bundle, backref='releases')
+
+    @property
+    def version(self):
+        return Version(self.tag_name)
 
 
 class Tag(db.Model):

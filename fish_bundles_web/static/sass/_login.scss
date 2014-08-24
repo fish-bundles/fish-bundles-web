@@ -1,0 +1,32 @@
+.login-page {
+    background-color: #f0f0f0;
+}
+
+$login-width: 600px;
+$login-height: 360px;
+
+.login {
+    @include box-sizing(border-box);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: $login-width;
+    height: $login-height;
+    padding: 30px;
+    margin-top: -1 * $login-height / 2;
+    margin-left: -1 * $login-width / 2;
+    background-color: #fff;
+    border: solid 1px #ddd;
+    border-radius: 3px;
+
+    .login-logo {
+        margin: 0 auto 30px;
+        @include common-sprite(small-logo, $dimensions: true);
+    }
+
+    .login-button {
+        width: 200px;
+        margin: 30px auto 0;
+        display: block;
+    }
+}

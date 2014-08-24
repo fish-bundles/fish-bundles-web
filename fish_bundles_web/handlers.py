@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import request, g, render_template, abort
+from flask import request, g, render_template, abort, redirect
 from ujson import loads, dumps
 from sqlalchemy import exists
 
@@ -25,19 +25,19 @@ class BundleResolver(object):
         self.bundle_set = set(self.bundles)
 
     def resolve(self):
-        from fish_bundles_web.models import Bundle, Repository
+        from fish_bundles_web.models import Bundle
 
         bundles = []
 
-        db_bundles = db.session.query(Bundle).filter(Repository.repo_name.in_(self.bundles)).all()
-        db_bundle_set = set([db_bundle.repo.repo_name for db_bundle in db_bundles])
+        db_bundles = db.session.query(Bundle).filter(Bundle.repo_name.in_(self.bundles)).all()
+        db_bundle_set = set([db_bundle.repo_name for db_bundle in db_bundles])
 
         if len(db_bundles) != len(self.bundle_set):
             not_found_bundles = self.bundle_set - db_bundle_set
             return None, list(not_found_bundles)
 
         for bundle in db_bundles:
-            tags = get_repo_tags(bundle.repo.repo_name)
+            tags = get_repo_tags(bundle.repo_name)
             last_tag = tags[0]
             bundles.append({
                 'repo': last_tag['repo'],
@@ -63,8 +63,12 @@ def my_bundles():
         return dumps({
             'result': 'bundles-not-found',
             'bundles': None,
-            'error': "Some bundles could not be found (%s). Maybe there's no bundle created at bundles.fish for that git repo?" % (
-                ", ".join(error)
+            'error':
+            (
+                "Some bundles could not be found (%s). Maybe there's no bundle "
+                "created at bundles.fish for that git repo?" % (
+                    ", ".join(error)
+                )
             )
         })
 
@@ -95,9 +99,16 @@ def create_bundle():
     orgs = Organization.query.filter_by(user=g.user).order_by(Organization.org_name).all()
 
     repos = db.session.query(Repository).filter(Repository.user == g.user).filter(
-        ~exists().where(Bundle.repo_id == Repository.id)
+        ~exists().where(Bundle.repo_name == Repository.repo_name)
     ).order_by(Repository.repo_name).all()
     return render_template('create.html', repos=repos, orgs=orgs)
+
+
+@app.route("/update-bundles", methods=['GET'])
+@authenticated
+def update_bundles():
+    update_user_repos(force=True)
+    return redirect('/create-bundle')
 
 
 @app.route("/save-bundle", methods=['POST'])
@@ -119,9 +130,6 @@ def save_bundle():
             'slug': None
         })
 
-    # just pre-loading tags
-    get_repo_tags(repository.repo_name)
-
     exists = Bundle.query.filter_by(repo=repository).first()
     if exists:
         return dumps({
@@ -132,8 +140,14 @@ def save_bundle():
     repo_readme = github.get("repos/%s/readme" % repository.repo_name)
     contents = repo_readme['content'].decode(repo_readme['encoding'])
 
-    bundle = Bundle(slug=repository.slug, repo=repository, readme=contents, category=category, author=g.user, last_updated_at=datetime.now())
+    bundle = Bundle(
+        slug=repository.slug, repo=repository, readme=contents, category=category,
+        author=g.user, last_updated_at=datetime.now()
+    )
     db.session.add(bundle)
+
+    # just pre-loading tags
+    get_repo_tags(repository.repo_name, bundle)
 
     db.session.add(BundleFile(path=repo_readme['name'], file_type=MARKDOWN, contents=contents, bundle=bundle))
 

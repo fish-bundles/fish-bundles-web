@@ -5,8 +5,8 @@
     <div class="pull-right tags">
         <div class="title">VERSIONS</div>
         <ul class="list-unstyled">
-            {% for tag in bundle.repo.all_tags %}
-            <li>{% if tag.tag_name == bundle.repo.last_tag.tag_name %}<span class="glyphicon glyphicon-star"></span>{% endif %}{{ tag.tag_name }}</li>
+            {% for release in bundle.repo.all_releases %}
+            <li>{% if release.tag_name == bundle.last_release.tag_name %}<span class="glyphicon glyphicon-star"></span>{% endif %}{{ release.tag_name }}</li>
             {% endfor %}
         </ul>
     </div>
