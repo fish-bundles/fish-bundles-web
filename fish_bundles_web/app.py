@@ -34,20 +34,23 @@ def parse_arguments(args=None):
     return options
 
 
-def main():
+def init_app(conf):
     import fish_bundles_web.handlers  # NOQA
     import fish_bundles_web.login  # NOQA
     from fish_bundles_web.bundles import init_bundles  # NOQA
     from fish_bundles_web import config  # NOQA
 
-    args = parse_arguments()
-    config.init_app(app, path=args.conf)
+    config.init_app(app, path=conf)
 
     github.init_app(app)
     db.init_app(app)
 
     init_bundles()
 
+
+def main():
+    args = parse_arguments()
+    init_app(args.conf)
     app.run(debug=args.debug, host=args.bind, port=args.port)
 
 
