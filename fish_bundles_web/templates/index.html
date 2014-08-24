@@ -7,7 +7,7 @@
             <div class="list-group">
                 {% for bundle in bundles %}
                 <a href="/bundles/{{ bundle.slug }}" class="list-group-item">
-                    <h4><span class="glyphicon glyphicon-download icon"></span>{{ bundle.repo_name }}{% if bundle.last_release %}<span class="label label-info last-version">{{ bundle.repo.last_release.tag_name }}</span>{% endif %}<span class="pull-right badge">{{ bundle.install_count }} {% if bundle.install_count > 1 %}installs{% else %}install{% endif %}</span></h4>
+                    <h4><span class="glyphicon glyphicon-download icon"></span>{{ bundle.repo_name }}{% if bundle.last_release %}<span class="label label-info last-version">{{ bundle.last_release.tag_name }}</span>{% endif %}<span class="pull-right badge">{{ bundle.install_count }} {% if bundle.install_count > 1 %}installs{% else %}install{% endif %}</span></h4>
                     <p>{{ bundle.description }}</p>
                     <p class="label-container">
                         <span class="label label-success">By {{ bundle.author.name }}</span>

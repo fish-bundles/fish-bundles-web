@@ -1,3 +1,6 @@
+import sys
+import argparse
+
 from flask import Flask, g, session
 from flask.ext.github import GitHub
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -17,25 +20,35 @@ def before_request():
         g.user = User.query.filter_by(username=session['user']).first()
 
 
+def parse_arguments(args=None):
+    if args is None:
+        args = sys.argv[1:]
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--port', '-p', type=int, default="5000", help="Port to start the server with.")
+    parser.add_argument('--bind', '-b', default="0.0.0.0", help="IP to bind the server to.")
+    parser.add_argument('--conf', '-c', default='fish_bundles_web/config/local.conf', help="Path to configuration file.")
+    parser.add_argument('--debug', '-d', action='store_true', default=False, help='Indicates whether to run in debug mode.')
+
+    options = parser.parse_args(args)
+    return options
+
+
 def main():
     import fish_bundles_web.handlers  # NOQA
     import fish_bundles_web.login  # NOQA
     from fish_bundles_web.bundles import init_bundles  # NOQA
+    from fish_bundles_web import config  # NOQA
 
-    app.config['MAX_GITHUB_REQUESTS'] = 15
-    app.config['REPOSITORY_SYNC_EXPIRATION_MINUTES'] = 60 * 24 * 7
-    app.config['REPOSITORY_TAGS_EXPIRATION_MINUTES'] = 3
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/fish_bundles_web'
-    app.config['GITHUB_CLIENT_ID'] = '0cd596cdcfb372e75fb0'
-    app.config['GITHUB_CLIENT_SECRET'] = '14569ca47300ab7d30ebe784a10efe0f9ce93981'
-    app.config['GITHUB_CALLBACK_URL'] = 'http://local.bundles.fish:5000/github-callback'
-    app.secret_key = '5CA2086C182A0CFA601896960DF196F09DEA13A14D884F810B52217F6323D8E1'
+    args = parse_arguments()
+    config.init_app(app, path=args.conf)
+
     github.init_app(app)
     db.init_app(app)
 
     init_bundles()
 
-    app.run(debug=True)
+    app.run(debug=args.debug, host=args.bind, port=args.port)
 
 
 if __name__ == "__main__":

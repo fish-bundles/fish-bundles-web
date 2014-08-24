@@ -15,7 +15,7 @@ FISH = 2
 @app.route("/")
 def index():
     from fish_bundles_web.models import Bundle
-    bundles = db.session.query(Bundle)[:50]
+    bundles = db.session.query(Bundle).order_by(Bundle.install_count.desc())[:50]
     return render_template('index.html', bundles=bundles)
 
 

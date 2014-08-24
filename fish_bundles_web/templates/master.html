@@ -18,15 +18,49 @@
                     <a class="icon" href="/"></a>
                     <p class="text">fish-bundles allows fish-shell users to easily share their functions with each other.</p>
                     <p class="buttons">
-                        <a class="btn btn-primary btn-lg" role="button">Install</a>
+                        <a class="btn btn-primary btn-lg install-button" role="button">Install</a>
                         <a class="btn btn-lg" href="/create-bundle" role="button">Create a bundle</a>
                         <a class="pull-right read-docs" href="http://docs.bundles.fish" role="button">Read the docs</a>
                     </p>
                 </div>
             </div>
         </header>
+        <div class="install-instructions">
+            <div class="container">
+                <h2>Installing fish-bundles</h2>
+                <p>fish-bundles can be easily installed provided you have python installed (<a href="">Most</a> <a href="">modern</a> Operating Systems do).</p>
+                <p>You can choose to install it with <a href="">pip</a>, <a href="https://github.com/mitsuhiko/pipsi">pipsi</a> or setuptool's easy_install (not recommended):</p>
+                <pre><code>$ pip install fish-bundles</code></pre>
+                <p>or</p>
+                <pre><code>$ pipsi install fish-bundles</code></pre>
+                <p>or</p>
+                <pre><code>$ easy_install fish-bundles</code></pre>
 
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Usage</h2>
+                        <p>Using is pretty simple, once you figured the bundles you want to have in your system, just add the following to your config.fish file:</p>
+                        <pre><code>fish_bundles_init
+fish_bundle "&lt;fish-bundle-name&gt;"
+#example bundle
+fish_bundle "fish-bundles/virtual-fish-bundle"</code></pre>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>fb application</h2>
+                        <p>fish-bundles comes with a console application called <strong>fb</strong>.</p>
+                        <p>Its commands include <strong>install</strong>, <strong>list</strong> and <strong>init</strong>.</p>
+                        <p class="more-details">For more details, run:</p>
+                        <pre><code>$ fb --help</code></pre>
+                    </div>
+                </div>
+
+                <a href="javascript:" class="btn btn-primary btn-lg btn-block install-button">close instructions</a>
+            </div>
+        </div>
+
+        <div class="main-content">
         {% block main %}{% endblock %}
+        </div>
 
         <footer>
             <p>fish-bundles is <a href="https://github.com/fish-bundles">open-source software</a> - Licensed under MIT - fish icon free for commercial use by <a href="http://www.aha-soft.com/">aha-soft</a></p>

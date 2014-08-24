@@ -62,6 +62,7 @@ fish-bundles-web is the website for fish-bundles.
         'awesome-slugify',
         'markdown',
         'semantic_version',
+        'derpconf',
     ],
     extras_require={
         'tests': tests_require,

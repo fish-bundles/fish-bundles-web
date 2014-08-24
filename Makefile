@@ -23,7 +23,7 @@ setup:
 	@pip install -U -e .\[tests\]
 
 run:
-	@fish-bundles-web
+	@fish-bundles-web -d -c ./fish_bundles_web/config/local.conf
 
 # test your application (tests in the tests/ directory)
 test: unit

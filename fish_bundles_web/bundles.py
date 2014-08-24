@@ -18,6 +18,7 @@ def init_bundles():
     app_files = [
         'scripts/main.coffee',
         'scripts/create.coffee',
+        'scripts/header.coffee',
     ]
     js = Bundle(*app_files, filters=['coffeescript', 'jsmin'], output='scripts/fish-bundles.app.min.js')
     assets.register('js_app', js)
