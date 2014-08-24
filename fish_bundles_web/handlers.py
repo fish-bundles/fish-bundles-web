@@ -152,7 +152,7 @@ def save_bundle():
 
     bundle = Bundle(
         slug=repository.slug, repo_name=repository.repo_name, org_name=org_name, readme=contents, category=category,
-        author=g.user, last_updated_at=datetime.now()
+        author=g.user, created_at=datetime.now(), last_updated_at=datetime.now()
     )
 
     config_file = update_config_file(bundle)

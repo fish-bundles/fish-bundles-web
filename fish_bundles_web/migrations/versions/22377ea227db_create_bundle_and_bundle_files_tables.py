@@ -12,7 +12,6 @@ down_revision = '47a2ad7df96a'
 
 from alembic import op
 import sqlalchemy as sa
-import sqlalchemy.sql.functions as func
 
 
 def upgrade():
@@ -24,8 +23,8 @@ def upgrade():
         sa.Column('readme', sa.UnicodeText, nullable=True),
         sa.Column('category', sa.Integer, nullable=False),
         sa.Column('author_id', sa.Integer, sa.ForeignKey('users.id'), nullable=False),
-        sa.Column('created_at', sa.DateTime, server_default=func.now()),
-        sa.Column('last_updated_at', sa.DateTime, server_default=func.now())
+        sa.Column('created_at', sa.DateTime),
+        sa.Column('last_updated_at', sa.DateTime)
     )
 
     op.create_index('idx_bundles_name', 'bundles', ['repo_name'])
