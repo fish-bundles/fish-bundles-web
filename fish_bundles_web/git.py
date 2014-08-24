@@ -3,6 +3,7 @@ from datetime import datetime
 
 from flask import g
 from semantic_version import Version
+from flask.ext.github import GitHubError
 
 from fish_bundles_web.app import github, db, app
 
@@ -120,6 +121,20 @@ def get_repo_tags(repo, bundle=None):
         db.session.flush()
 
     return list(reversed(sorted(repository.taglist, key=lambda item: item['version']['object'])))
+
+
+def update_config_file(bundle):
+    try:
+        url = "repos/%s/contents/bundle.yml" % bundle.repo_name
+        bundle_config_response = github.get(url)
+        bundle_config = bundle_config_response['content'].decode(bundle_config_response['encoding'])
+    except GitHubError:
+        return None
+
+    bundle.config = bundle_config
+    bundle.last_updated_config = datetime.now()
+
+    return bundle_config
 
 
 def get_user_orgs():

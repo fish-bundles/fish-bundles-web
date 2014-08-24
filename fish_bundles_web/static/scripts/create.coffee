@@ -1,31 +1,3 @@
-markdownTemplate = """
-Introduction
-------------
-
-This bundle does something cool.
-
-Usage
------
-
-install with fish-bundles by adding to your `fish-bundles-list.fish` file:
-
-    set -gx _fish_bundles_list $_fish_bundles_list '<user>/<bundle-name>'
-
-Provided Functions
-------------------
-
-This bundle comes with the following functions:
-
-* does-something-nice - does something nice with the given $argv
-* does-other-thing - otherify the thingy in the filesystem
-"""
-
-bundleMainTemplate = """
-function my-function
-    echo Hello $argv
-end
-"""
-
 class CreateCtrl
     constructor: (@element) ->
         @selectedRepository = null
@@ -48,6 +20,7 @@ class CreateCtrl
         @elements =
             category: @element.find('#bundle-category')
             warning: @element.find('#duplicate-name')
+            noConfig: @element.find('#no-config')
             noRepo: @element.find('#no-repo')
 
         @element.find('.create-bundle-button').bind('click', (ev) =>
@@ -60,6 +33,7 @@ class CreateCtrl
 
     createNewBundle: (obj) ->
         @elements.warning.hide()
+        @elements.noConfig.hide()
 
         if not @selectedRepository?
             @elements.noRepo.show()
@@ -77,6 +51,10 @@ class CreateCtrl
                 resultObj = JSON.parse(result)
                 if resultObj.result == 'duplicate_name'
                     @elements.warning.fadeIn()
+                    return
+
+                if resultObj.result == 'no_config'
+                    @elements.noConfig.fadeIn()
                     return
 
                 window.location = "/bundles/#{ resultObj.slug }"

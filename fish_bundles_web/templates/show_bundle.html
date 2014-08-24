@@ -5,14 +5,14 @@
     <div class="pull-right tags">
         <div class="title">VERSIONS</div>
         <ul class="list-unstyled">
-            {% for release in bundle.repo.all_releases %}
+            {% for release in bundle.all_releases %}
             <li>{% if release.tag_name == bundle.last_release.tag_name %}<span class="glyphicon glyphicon-star"></span>{% endif %}{{ release.tag_name }}</li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="markdown">
-        <span class="label label-primary">{{ bundle.repo.repo_name }}</span>
+        <span class="label label-primary">{{ bundle.repo_name }}</span>
         {% autoescape false %}
             {{ bundle.readme_html }}
         {% endautoescape %}
@@ -22,8 +22,8 @@
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'fish-bundles';
-        var disqus_identifier = '{{ bundle.repo.repo_name }}';
-        var disqus_title = '{{ bundle.repo.repo_name }} fish-bundle - Go get it now!';
+        var disqus_identifier = '{{ bundle.repo_name }}';
+        var disqus_title = '{{ bundle.repo_name }} fish-bundle - Go get it now!';
         var disqus_url = 'http://bundles.fish/bundles/{{ bundle.slug }}';
 
         /* * * DON'T EDIT BELOW THIS LINE * * */

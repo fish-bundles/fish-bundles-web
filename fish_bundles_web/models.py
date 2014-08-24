@@ -34,10 +34,12 @@ class Bundle(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(255), nullable=False, unique=True)
+    config = db.Column(db.Text, nullable=False)
     readme = db.Column(db.UnicodeText, nullable=False, unique=True)
     category = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime)
     last_updated_at = db.Column(db.DateTime)
+    last_updated_config = db.Column(db.DateTime)
     install_count = db.Column(db.Integer, nullable=False, default=0)
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

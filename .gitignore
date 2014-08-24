@@ -54,3 +54,4 @@ docs/_build/
 .webassets-cache
 .sass-cache
 fishhooks/static/vendor/
+.DS_Store

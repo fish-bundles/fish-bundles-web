@@ -6,7 +6,7 @@ from sqlalchemy import exists
 
 from fish_bundles_web.app import app, db, github
 from fish_bundles_web.decorators import authenticated
-from fish_bundles_web.git import update_user_repos, get_repo_tags
+from fish_bundles_web.git import update_user_repos, get_repo_tags, update_config_file
 
 MARKDOWN = 1
 FISH = 2
@@ -130,7 +130,7 @@ def save_bundle():
             'slug': None
         })
 
-    exists = Bundle.query.filter_by(repo=repository).first()
+    exists = Bundle.query.filter_by(repo_name=repository.repo_name).first()
     if exists:
         return dumps({
             'result': 'duplicate_name',
@@ -139,11 +139,20 @@ def save_bundle():
 
     repo_readme = github.get("repos/%s/readme" % repository.repo_name)
     contents = repo_readme['content'].decode(repo_readme['encoding'])
+    org_name = repository.organization and repository.organization.org_name or ''
 
     bundle = Bundle(
-        slug=repository.slug, repo=repository, readme=contents, category=category,
+        slug=repository.slug, repo_name=repository.repo_name, org_name=org_name, readme=contents, category=category,
         author=g.user, last_updated_at=datetime.now()
     )
+
+    config_file = update_config_file(bundle)
+    if config_file is None:
+        return dumps({
+            'result': 'no_config',
+            'slug': None
+        })
+
     db.session.add(bundle)
 
     # just pre-loading tags
