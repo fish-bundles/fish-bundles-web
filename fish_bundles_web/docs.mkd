@@ -1,0 +1,41 @@
+Documentation
+=============
+
+Installing
+----------
+
+`fish-bundles` can be easily installed provided you have python installed (Most modern Operating Systems do).
+
+You can choose to install it with pip, pipsi or setuptool's easy_install (not recommended):
+
+    $ pip install fish-bundles
+    $ pipsi install fish-bundles
+    $ easy_install fish-bundles
+
+Usage
+-----
+
+Using `fish-bundles` is pretty simple, once you figured the bundles you want to have in your system, just add the following to your config.fish file:
+
+    # this function is required to initialize every installed bundle
+    # and must be called before any other fish-bundles functions
+    fish_bundles_init
+
+    # to add new bundles, just use the "fish_bundle" function
+    fish_bundle "<fish-bundle-name>"
+
+    # example bundle
+    fish_bundle "fish-bundles/virtual-fish-bundle"
+
+
+
+fb Application
+--------------
+
+`fish-bundles` comes with a console application called fb.
+
+Its commands include install, list and init.
+
+For more details, run:
+
+$ fb --help

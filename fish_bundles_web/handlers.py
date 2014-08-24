@@ -1,6 +1,8 @@
 from datetime import datetime
+from os.path import abspath, dirname, join
 
 from flask import request, g, render_template, abort, redirect
+import markdown
 from ujson import loads, dumps
 from sqlalchemy import exists
 
@@ -17,6 +19,13 @@ def index():
     from fish_bundles_web.models import Bundle
     bundles = db.session.query(Bundle).order_by(Bundle.install_count.desc())[:50]
     return render_template('index.html', bundles=bundles)
+
+
+@app.route("/docs")
+def docs():
+    with open(join(abspath(dirname(__file__)), 'docs.mkd')) as mkd_file:
+        mkd = markdown.markdown(mkd_file.read())
+    return render_template('docs.html', markdown=mkd)
 
 
 class BundleResolver(object):

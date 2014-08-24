@@ -1,0 +1,3 @@
+prune tests/
+recursive-include fish_bundles_web *.py *.conf *.mkd *.html *.css *.js *.png *.jpg *.jpeg *.gif *.txt *.eot *.ttf *.woff *.eot *.json *.md *.scss *.sass *.coffee *.ini
+prune fish_bundles_web/node_modules
