@@ -21,6 +21,8 @@ Config.define('REPOSITORY_SYNC_EXPIRATION_MINUTES', 7 * DAY / MINUTE, 'Repositor
 Config.define('REPOSITORY_TAGS_EXPIRATION_MINUTES', 3, 'Repository sync expiration', 'GitHub')
 
 Config.define('SQLALCHEMY_DATABASE_URI', 'mysql://root@localhost/fish_bundles_web', 'MySQL connection string', 'DB')
+Config.define('SQLALCHEMY_POOL_RECYCLE', 10, 'Number of seconds after which a connection is automatically recycled.', 'DB')
+Config.define('SQLALCHEMY_POOL_SIZE', 20, 'The size of the database pool.', 'DB')
 
 Config.define('GITHUB_CLIENT_ID', '0cd596cdcfb372e75fb0', 'Github Client Id', 'GitHub')
 Config.define('GITHUB_CLIENT_SECRET', '14569ca47300ab7d30ebe784a10efe0f9ce93981', 'Github Client Secret', 'GitHub')
