@@ -48,7 +48,7 @@ fish-bundles-web is the website for fish-bundles.
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Flask==0.10.1',
+        'Flask==1.0',
         'alembic==0.6.6',
         'mysql-python==1.2.5',
         'GitHub-Flask==1.1.1',
