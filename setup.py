@@ -58,7 +58,7 @@ fish-bundles-web is the website for fish-bundles.
         'Flask-Assets==0.10',
         'jsmin==2.0.11',
         'cssmin==0.2.0',
-        'ujson==1.33',
+        'ujson==5.4.0',
         'awesome-slugify==1.6',
         'markdown==2.4.1',
         'semantic_version==2.3.0',
